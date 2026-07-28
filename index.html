@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbie & Pookie - Ultra Cute Pink Edition 🎀</title>
+  <link rel="manifest" href="data:application/json;charset=utf-8,{&quot;name&quot;:&quot;Barbie Movies&quot;,&quot;short_name&quot;:&quot;Barbie&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#0f050a&quot;,&quot;theme_color&quot;:&quot;#ff1493&quot;}">
+  <style>
+    :root {
+      --barbie-pink: #ff1493; --pookie-pink: #ff69b4; --soft-pink: #ffb6c1;
+      --deep-bg: #0f050a; --card-bg: #1a0b14;
+      --text-main: #ffffff; --text-muted: #d1b2c4;
+      --mac-glass: rgba(26, 11, 20, 0.75);
+      --mac-blur: blur(35px) saturate(200%);
+      --mac-border: 1px solid rgba(255, 182, 193, 0.2);
+      --glow-shadow: 0 0 30px rgba(255, 20, 147, 0.45);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* Custom Pink Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--deep-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--pookie-pink); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--barbie-pink); }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--deep-bg);
+      background-image: radial-gradient(circle at 50% 0%, #3d0a29 0%, var(--deep-bg) 65%);
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ULTRA NAVIGATION */
+    header {
+      background: rgba(20, 7, 15, 0.7); backdrop-filter: var(--mac-blur);
+      -webkit-backdrop-filter: var(--mac-blur); padding: 18px 45px;
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 1000; border-bottom: var(--mac-border);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+    .nav-left { display: flex; align-items: center; gap: 35px; }
+    .logo { font-size: 2.2rem; font-weight: 900; cursor: pointer; letter-spacing: -1px; text-shadow: 0 0 20px rgba(255,20,147,0.6); }
+    .logo span { color: var(--barbie-pink); text-shadow: 0 0 25px var(--barbie-pink); }
+    
+    .nav-tabs { display: flex; gap: 15px; align-items: center; }
+    .tab-btn {
+      background: transparent; color: var(--text-muted); border: none; font-size: 0.95rem;
+      cursor: pointer; transition: all 0.3s ease; padding: 6px 14px; font-weight: 600; white-space: nowrap;
+      border-radius: 20px;
+    }
+    .tab-btn.active { color: white; background: rgba(255, 20, 147, 0.25); font-weight: bold; border: 1px solid rgba(255, 105, 180, 0.4); box-shadow: 0 0 15px rgba(255,20,147,0.3); }
+    .tab-btn:hover:not(.active) { color: white; background: rgba(255, 182, 193, 0.1); }
+
+    /* FANCY DROPDOWN */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-menu {
+      display: none; position: absolute; top: 120%; left: 0;
+      background: rgba(22, 9, 17, 0.92); backdrop-filter: var(--mac-blur);
+      -webkit-backdrop-filter: var(--mac-blur);
+      min-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+      border: var(--mac-border); border-radius: 18px;
+      padding: 18px; z-index: 1100;
+      grid-template-columns: repeat(2, 1fr); gap: 8px;
+      animation: dropdownPopup 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes dropdownPopup { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .dropdown:hover .dropdown-menu, .dropdown.active .dropdown-menu { display: grid; }
+    .dropdown-menu div {
+      padding: 10px 14px; color: #f3d6e5; cursor: pointer; border-radius: 12px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); font-size: 0.9rem; font-weight: 500;
+      border: 1px solid transparent;
+    }
+    .dropdown-menu div:hover { background: var(--barbie-pink); color: white; transform: translateX(6px); border-color: rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(255,20,147,0.5); }
+
+    .nav-right { display: flex; align-items: center; gap: 15px; }
+    .search-box { 
+      display: flex; align-items: center; background: rgba(255, 182, 193, 0.08); 
+      border: var(--mac-border); border-radius: 25px; padding: 6px 16px; 
+      backdrop-filter: blur(10px); transition: 0.3s ease;
+    }
+    .search-box:focus-within { border-color: var(--barbie-pink); box-shadow: 0 0 20px rgba(255,20,147,0.4); background: rgba(255, 182, 193, 0.15); }
+    .search-box input { background: transparent; border: none; color: white; padding: 6px; outline: none; width: 190px; font-size: 0.9rem; }
+    .search-box button { background: transparent; border: none; color: white; cursor: pointer; font-size: 1.1rem; }
+    
+    .account-btn {
+      background: linear-gradient(135deg, var(--barbie-pink), var(--pookie-pink)); color: white; border: none; padding: 10px 22px;
+      border-radius: 25px; font-weight: bold; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); font-size: 0.9rem;
+      box-shadow: 0 4px 20px rgba(255, 20, 147, 0.4);
+    }
+    .account-btn:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 20, 147, 0.7); }
+
+    /* FILTER & SORT BAR */
+    .main-content { padding: 45px; }
+    .filter-bar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;
+    }
+    .section-title { font-size: 1.8rem; font-weight: 700; border-left: 5px solid var(--barbie-pink); padding-left: 12px; letter-spacing: 0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .sort-dropdown {
+      background: rgba(30, 12, 22, 0.8); backdrop-filter: blur(15px); color: white; border: var(--mac-border);
+      padding: 10px 18px; border-radius: 15px; outline: none; cursor: pointer; font-size: 0.9rem; font-weight: 500;
+      transition: 0.3s ease;
+    }
+    .sort-dropdown:hover { border-color: var(--pookie-pink); box-shadow: 0 0 10px rgba(255,105,180,0.3); }
+
+    /* CINEMATIC HERO BANNER */
+    .hero-banner { width: 100%; height: 72vh; position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,182,193,0.1); }
+    .hero-track { display: flex; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .hero-slide {
+      min-width: 100%; height: 100%; background-size: cover; background-position: center center;
+      display: flex; align-items: flex-end; padding: 60px 70px; position: relative; flex-shrink: 0;
+    }
+    .hero-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to right, rgba(15,5,10,0.95) 0%, rgba(15,5,10,0.6) 55%, transparent 100%),
+                  linear-gradient(to top, var(--deep-bg) 0%, rgba(15,5,10,0.3) 60%);
+    }
+    .hero-content { position: relative; max-width: 700px; z-index: 10; animation: heroFade 0.8s ease; }
+    @keyframes heroFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 15px; text-shadow: 0 4px 20px rgba(0,0,0,0.9); line-height: 1.1; letter-spacing: -1px; }
+    .hero-desc { font-size: 1.1rem; color: #f0d8e6; margin-bottom: 30px; line-height: 1.6; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
+    
+    .btn-main {
+      padding: 13px 30px; background: var(--barbie-pink); color: white; border: none;
+      border-radius: 14px; font-size: 1.05rem; font-weight: bold; cursor: pointer; 
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-right: 12px;
+      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
+    }
+    .btn-secondary { background: rgba(255, 182, 193, 0.18); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: var(--mac-border); box-shadow: none; }
+    .btn-main:hover { filter: brightness(1.2); transform: scale(1.06) translateY(-2px); box-shadow: 0 10px 25px rgba(255, 20, 147, 0.7); }
+
+    .slider-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(30, 12, 22, 0.6); color: white; border: var(--mac-border);
+      font-size: 1.4rem; width: 50px; height: 50px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    }
+    .slider-arrow:hover { background: var(--barbie-pink); border-color: var(--barbie-pink); transform: translateY(-50%) scale(1.12); box-shadow: 0 0 20px var(--barbie-pink); }
+    .slider-left { left: 25px; }
+    .slider-right { right: 25px; }
+    .slider-dots { position: absolute; bottom: 30px; right: 60px; display: flex; gap: 8px; z-index: 20; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,182,193,0.3); cursor: pointer; transition: all 0.3s ease; }
+    .dot.active { background: var(--barbie-pink); width: 30px; border-radius: 6px; box-shadow: 0 0 12px var(--barbie-pink); }
+
+    /* CARDS & GRID */
+    .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 30px; }
+
+    .card {
+      background-color: var(--card-bg); border-radius: 18px; overflow: hidden; position: relative; cursor: pointer; 
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      animation: fadeInCard 0.6s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(255, 182, 193, 0.12);
+    }
+    @keyframes fadeInCard { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .card:hover {
+      transform: translateY(-14px) scale(1.05);
+      box-shadow: 0 25px 40px rgba(255, 20, 147, 0.35), 0 0 20px rgba(255, 182, 193, 0.2);
+      border-color: rgba(255, 20, 147, 0.6);
+      z-index: 50;
+    }
+    .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease; }
+    .card:hover img { transform: scale(1.12); filter: brightness(0.9); }
+    .card-info {
+      position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px 15px 15px 15px;
+      background: linear-gradient(to top, rgba(15,5,10,0.98) 25%, rgba(15,5,10,0.7) 75%, transparent 100%);
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-info { transform: translateY(-5px); }
+    .card-info h4 { font-size: 1rem; margin-bottom: 5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-info p { font-size: 0.85rem; color: var(--pookie-pink); font-weight: bold; display: flex; align-items: center; gap: 5px; }
+
+    /* SKELETON SCREEN LOADERS */
+    .skeleton-card {
+      background-color: #210d18; border-radius: 18px; aspect-ratio: 2/3; position: relative; overflow: hidden; border: 1px solid rgba(255,182,193,0.05);
+    }
+    .skeleton-card::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,182,193,0.08), transparent);
+      animation: skeleton-loading 1.5s infinite;
+    }
+    @keyframes skeleton-loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+    /* ULTRA MAC BLURRED MODALS */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 3, 7, 0.7); backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      justify-content: center; align-items: center; z-index: 2000;
+      animation: fadeInModal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes fadeInModal { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(30px) saturate(180%); } }
+
+    .details-modal {
+      width: 92%; max-width: 980px; height: 88vh; 
+      background: rgba(24, 9, 17, 0.85); backdrop-filter: var(--mac-blur);
+      -webkit-backdrop-filter: var(--mac-blur);
+      border-radius: 24px; overflow-y: auto;
+      position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.95); border: var(--mac-border);
+      animation: scaleUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes scaleUpModal { from { transform: scale(0.95) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+    .details-header { width: 100%; height: 500px; background-size: cover; background-position: center; position: relative; }
+    .details-gradient { position: absolute; inset: 0; background: linear-gradient(to top, rgba(24,9,17,1) 0%, rgba(24,9,17,0.5) 45%, transparent 100%); }
+    .close-modal { 
+      position: absolute; top: 20px; right: 25px; font-size: 1.6rem; cursor: pointer; z-index: 10; 
+      background: rgba(255, 182, 193, 0.15); backdrop-filter: blur(15px); color: white; width: 42px; height: 42px; border-radius: 50%; 
+      text-align: center; line-height: 42px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: var(--mac-border);
+    }
+    .close-modal:hover { background: var(--barbie-pink); transform: rotate(90deg) scale(1.1); border-color: var(--barbie-pink); box-shadow: 0 0 15px var(--barbie-pink); }
+    .details-content { padding: 35px; position: relative; top: -110px; }
+    .details-title { font-size: 2.8rem; margin-bottom: 12px; text-shadow: 0 4px 15px rgba(0,0,0,0.9); font-weight: 800; letter-spacing: -0.5px; }
+    .meta-data { margin-bottom: 22px; color: #f0cce1; font-size: 1rem; font-weight: 500; }
+    .action-buttons { margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; }
+    
+    .cast-list { display: flex; gap: 18px; overflow-x: auto; padding-bottom: 12px; margin-top: 15px; scrollbar-width: thin; }
+    .cast-card { text-align: center; min-width: 90px; cursor: pointer; transition: 0.3s ease; }
+    .cast-card:hover { transform: scale(1.08); }
+    .cast-card img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; border: 2px solid var(--barbie-pink); box-shadow: 0 5px 15px rgba(255,20,147,0.4); }
+    .cast-card p { font-size: 0.82rem; color: #f3d6e5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; font-weight: 500; }
+
+    /* TRAILER MODAL */
+    #trailer-modal iframe { width: 100%; height: 100%; border-radius: 16px; }
+    .trailer-container { width: 85vw; height: 80vh; max-width: 950px; background: rgba(10,3,7,0.9); backdrop-filter: var(--mac-blur); border-radius: 20px; position: relative; border: var(--mac-border); box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
+
+    /* PLAYER MODAL */
+    #player-modal { z-index: 3000; flex-direction: column; }
+    .server-list { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+    .server-btn { 
+      padding: 10px 20px; background: rgba(35, 12, 26, 0.7); backdrop-filter: blur(15px); 
+      color: #e2b8d0; border: var(--mac-border); border-radius: 14px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); font-weight: 600;
+    }
+    .server-btn.active { background: var(--barbie-pink); color: white; font-weight: bold; border-color: var(--barbie-pink); box-shadow: 0 0 20px rgba(255,20,147,0.6); }
+    .server-btn:hover:not(.active) { background: rgba(255,182,193,0.15); color: white; }
+    .player-container { width: 92%; height: 82%; background: #000; border-radius: 20px; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.95); border: var(--mac-border); }
+    iframe { width: 100%; height: 100%; border: none; border-radius: 20px; }
+
+    /* RESPONSIVE MEDIA QUERIES */
+    @media (max-width: 768px) {
+      header { padding: 12px 18px; flex-direction: column; gap: 14px; }
+      .nav-left { width: 100%; justify-content: space-between; gap: 10px; }
+      .nav-tabs { width: 100%; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+      .nav-tabs::-webkit-scrollbar { display: none; }
+      .nav-right { width: 100%; justify-content: space-between; }
+      .search-box { width: 68%; }
+      .search-box input { width: 100%; }
+      .dropdown-menu { min-width: 280px; right: 0; left: auto; }
+      .hero-banner { height: 52vh; }
+      .hero-slide { padding: 30px 20px; }
+      .hero-title { font-size: 2.1rem; }
+      .main-content { padding: 20px; }
+      .grid-container { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+      .details-modal { width: 100%; height: 94vh; border-radius: 24px 24px 0 0; position: absolute; bottom: 0; }
+      .details-header { height: 300px; }
+      .details-content { padding: 22px; top: -60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav-left">
+      <div class="logo" onclick="loadTab('movie')">Barbie<span>.</span> 🎀</div>
+      <div class="nav-tabs">
+        <button class="tab-btn" id="tab-movie" onclick="loadTab('movie')">Movies</button>
+        <button class="tab-btn" id="tab-tv" onclick="loadTab('tv')">TV Series</button>
+        
+        <!-- GENRES DROPDOWN -->
+        <div class="dropdown" onclick="toggleDropdown(event)">
+          <button class="tab-btn" type="button">Genres 💖</button>
+          <div class="dropdown-menu">
+            <div onclick="loadGenre(28, 'Action')">🌸 Action</div>
+            <div onclick="loadGenre(12, 'Adventure')">🌸 Adventure</div>
+            <div onclick="loadGenre(16, 'Animation')">🌸 Animation</div>
+            <div onclick="loadGenre(35, 'Comedy')">🌸 Comedy</div>
+            <div onclick="loadGenre(80, 'Crime')">🌸 Crime</div>
+            <div onclick="loadGenre(99, 'Documentary')">🌸 Documentary</div>
+            <div onclick="loadGenre(18, 'Drama')">🌸 Drama</div>
+            <div onclick="loadGenre(14, 'Fantasy')">🌸 Fantasy</div>
+            <div onclick="loadGenre(27, 'Horror')">🌸 Horror</div>
+            <div onclick="loadGenre(9648, 'Mystery')">🌸 Mystery</div>
+            <div onclick="loadGenre(10749, 'Romance')">🌸 Romance</div>
+            <div onclick="loadGenre(878, 'Sci-Fi')">🌸 Sci-Fi</div>
+            <div onclick="loadGenre(53, 'Thriller')">🌸 Thriller</div>
+            <div onclick="loadIndonesianHorror()">🌸 Indonesian Horror</div>
+            <div onclick="loadCougarRomance()">🌸 Cougar Romance</div>
+          </div>
+        </div>
+
+        <button class="tab-btn" id="tab-watchlist" onclick="loadWatchlist()">My List 💖</button>
+      </div>
+    </div>
+    
+    <div class="nav-right">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search pookie..." onkeypress="if(event.key === 'Enter') executeSearch()">
+        <button onclick="executeSearch()">🔍</button>
+      </div>
+      <button class="account-btn" onclick="openAccountModal()">✨ Sync Account</button>
+    </div>
+  </header>
+
+  <!-- HERO BANNER -->
+  <div class="hero-banner" id="hero-banner-container">
+    <div class="hero-track" id="hero-track"></div>
+    <button class="slider-arrow slider-left" onclick="prevSlide()">&#10094;</button>
+    <button class="slider-arrow slider-right" onclick="nextSlide()">&#10095;</button>
+    <div class="slider-dots" id="slider-dots"></div>
+  </div>
+
+  <!-- MAIN GRID & ADVANCED FILTER BAR -->
+  <main class="main-content">
+    <div class="filter-bar">
+      <h2 class="section-title" id="section-title">Trending Now</h2>
+      <select class="sort-dropdown" id="sort-select" onchange="sortContent()">
+        <option value="default">Sort by: Default</option>
+        <option value="rating">Highest Rated 💖</option>
+        <option value="newest">Newest Release 📅</option>
+        <option value="title">Alphabetical (A-Z)</option>
+      </select>
+    </div>
+    <div class="grid-container" id="content-grid"></div>
+  </main>
+
+  <!-- DETAILS MODAL -->
+  <div class="modal-overlay" id="details-modal">
+    <div class="details-modal">
+      <div class="close-modal" onclick="closeDetails()">&times;</div>
+      <div class="details-header" id="modal-header">
+        <div class="details-gradient"></div>
+      </div>
+      <div class="details-content">
+        <h2 class="details-title" id="modal-title">Title</h2>
+        <div class="meta-data" id="modal-meta">2024 • Action • 💖 8.5</div>
+        <div class="action-buttons">
+          <button class="btn-main" id="modal-play-btn">▶ Play</button>
+          <button class="btn-main btn-secondary" id="modal-trailer-btn">🎬 Trailer</button>
+          <button class="btn-main btn-secondary" id="modal-list-btn">+ Add to List</button>
+        </div>
+        <p id="modal-desc" style="line-height: 1.7; color: #f0d8e6; font-size: 1rem;"></p>
+        
+        <h3 style="margin-top: 35px; font-size: 1.25rem; border-left: 3px solid var(--barbie-pink); padding-left: 10px; font-weight: 700;">Top Cast (Click for Filmography)</h3>
+        <div class="cast-list" id="modal-cast"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-SITE TRAILER MODAL -->
+  <div class="modal-overlay" id="trailer-modal">
+    <div class="close-modal" style="top:25px; right:30px;" onclick="closeTrailer()">&times;</div>
+    <div class="trailer-container">
+      <iframe id="trailer-iframe" src="" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- PLAYER MODAL -->
+  <div class="modal-overlay" id="player-modal">
+    <div class="close-modal" style="top: 25px; right: 30px;" onclick="closePlayer()">&times;</div>
+    <div class="server-list">
+      <button class="server-btn active" onclick="changeServer(1)">Server 1 (Vidsrc.me)</button>
+      <button class="server-btn" onclick="changeServer(2)">Server 2 (Vidsrc.to)</button>
+      <button class="server-btn" onclick="changeServer(3)">Server 3 (Embed.su)</button>
+    </div>
+    <div class="player-container">
+      <iframe id="video-frame" src="" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- CLOUD SYNC / ACCOUNT MODAL -->
+  <div class="modal-overlay" id="account-modal">
+    <div class="details-modal" style="max-width: 450px; height: auto; padding: 35px;">
+      <div class="close-modal" onclick="closeAccountModal()">&times;</div>
+      <h2 style="margin-bottom: 15px; color: var(--barbie-pink); font-size: 1.8rem; font-weight: 800;">Cloud Sync 🎀</h2>
+      <p style="color: #f0d8e6; margin-bottom: 22px; font-size: 0.95rem; line-height: 1.5;">Connect your pookie account to sync your watchlist securely across all devices.</p>
+      <input type="email" id="user-email" placeholder="Enter your email address" style="width: 100%; padding: 12px 16px; background: rgba(35,12,26,0.6); backdrop-filter: blur(10px); border: var(--mac-border); color: white; border-radius: 12px; margin-bottom: 18px; outline: none; font-size: 0.95rem;">
+      <button class="btn-main" style="width: 100%; margin: 0; padding: 12px;" onclick="simulateCloudSync()">Sync Watchlist Now</button>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "42054d62d274f174616f4bc7dfc0b12e"; 
+    const IMG_PATH = "https://image.tmdb.org/t/p/w500";
+    const BG_PATH = "https://image.tmdb.org/t/p/original";
+    
+    let currentType = 'movie'; 
+    let currentVideoId = null;
+    let watchlist = JSON.parse(localStorage.getItem('barbie_watchlist')) || [];
+    let currentItemsData = [];
+    
+    let currentPage = 1;
+    let currentEndpoint = '';
+    let isLoading = false;
+    let isSearchMode = false;
+    let heroItems = [];
+    let sliderIndex = 0;
+    let sliderInterval = null;
+
+    window.onload = () => {
+      loadTab('movie');
+      setupInfiniteScroll();
+    };
+
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      event.currentTarget.closest('.dropdown').classList.toggle('active');
+    }
+
+    window.addEventListener('click', () => {
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+    });
+
+    function showSkeletonLoaders() {
+      const grid = document.getElementById('content-grid');
+      grid.innerHTML = '';
+      for(let i=0; i<12; i++) {
+        grid.innerHTML += `<div class="skeleton-card"></div>`;
+      }
+    }
+
+    function loadTab(type) {
+      currentType = type;
+      isSearchMode = false;
+      currentPage = 1;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`tab-${type}`).classList.add('active');
+      document.getElementById('section-title').innerText = type === 'movie' ? "Trending Movies" : "Trending TV Series";
+      document.getElementById('hero-banner-container').style.display = 'block';
+      
+      currentEndpoint = `https://api.themoviedb.org/3/trending/${type}/week?api_key=${API_KEY}`;
+      fetchData(currentEndpoint, true, false);
+    }
+
+    function loadGenre(genreId, genreName) {
+      isSearchMode = false;
+      currentPage = 1;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('section-title').innerText = `${genreName} Collection`;
+      document.getElementById('hero-banner-container').style.display = 'block';
+      
+      currentEndpoint = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`;
+      fetchData(currentEndpoint, true, false);
+    }
+
+    function loadIndonesianHorror() {
+      isSearchMode = false;
+      currentPage = 1;
+      document.getElementById('section-title').innerText = "Indonesian Horror Collection";
+      document.getElementById('hero-banner-container').style.display = 'block';
+      currentEndpoint = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=27&with_original_language=id`;
+      fetchData(currentEndpoint, true, false);
+    }
+
+    async function loadCougarRomance() {
+      if (sliderInterval) clearInterval(sliderInterval);
+      isSearchMode = true; 
+      document.getElementById('section-title').innerText = "Cougar Romance Collection";
+      document.getElementById('hero-banner-container').style.display = 'none';
+      showSkeletonLoaders();
+
+      const movieTitles = ["The Idea of You", "The Reader", "Good Luck to You, Leo Grande", "Harold and Maude", "Adore", "Unfaithful", "The Piano Teacher", "Notes on a Scandal", "May December", "Prime", "The Perfect Find", "5 to 7"];
+      let results = [];
+      try {
+        for (let title of movieTitles) {
+          const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(title)}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.results && data.results.length > 0) {
+              const movie = data.results.find(m => m.poster_path && m.backdrop_path) || data.results[0];
+              if (movie) results.push(movie);
+            }
+          }
+        }
+        currentItemsData = results;
+        renderGrid(results, false);
+      } catch (err) { console.error(err); }
+    }
+
+    async function fetchData(url, isHome = false, append = false) {
+      if (isLoading) return;
+      isLoading = true;
+      if (!append) showSkeletonLoaders();
+
+      try {
+        const fullUrl = `${url}&page=${currentPage}`;
+        const res = await fetch(fullUrl);
+        const data = await res.json();
+        const validResults = data.results.filter(item => item.poster_path && item.backdrop_path);
+
+        if (isHome && !append && validResults.length > 0) {
+          heroItems = validResults.slice(0, 5);
+          buildHeroSlider();
+        }
+
+        if (append) {
+          currentItemsData = [...currentItemsData, ...validResults];
+        } else {
+          currentItemsData = validResults;
+        }
+        renderGrid(currentItemsData, false);
+      } catch (err) { 
+        console.error(err); 
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    function setupInfiniteScroll() {
+      window.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 300 && !isLoading && !isSearchMode) {
+          currentPage++;
+          fetchData(currentEndpoint, false, true);
+        }
+      });
+    }
+
+    function sortContent() {
+      const sortBy = document.getElementById('sort-select').value;
+      let sorted = [...currentItemsData];
+
+      if (sortBy === 'rating') {
+        sorted.sort((a, b) => b.vote_average - a.vote_average);
+      } else if (sortBy === 'newest') {
+        sorted.sort((a, b) => new Date(b.release_date || b.first_air_date || 0) - new Date(a.release_date || a.first_air_date || 0));
+      } else if (sortBy === 'title') {
+        sorted.sort((a, b) => (a.title || a.name || '').localeCompare(b.title || b.name || ''));
+      }
+      renderGrid(sorted, false);
+    }
+
+    function buildHeroSlider() {
+      const track = document.getElementById('hero-track');
+      track.innerHTML = '';
+      heroItems.forEach((item) => {
+        const slide = document.createElement('div');
+        slide.classList.add('hero-slide');
+        slide.style.backgroundImage = `url('${BG_PATH + item.backdrop_path}')`;
+        const type = item.media_type || currentType;
+        const title = item.title || item.name;
+        const desc = item.overview ? item.overview.substring(0, 140) + "..." : "";
+        
+        slide.innerHTML = `
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h2 class="hero-title">${title}</h2>
+            <p class="hero-desc">${desc}</p>
+            <button class="btn-main" onclick="openPlayer(${item.id}, '${type}')">▶ Watch Now</button>
+            <button class="btn-main btn-secondary" onclick="openDetails(${item.id}, '${type}')">ℹ More Info</button>
+          </div>
+        `;
+        track.appendChild(slide);
+      });
+      renderDots();
+      showSlide(0);
+      startAutoSlide();
+    }
+
+    function startAutoSlide() {
+      if (sliderInterval) clearInterval(sliderInterval);
+      sliderInterval = setInterval(() => { nextSlide(false); }, 5000);
+    }
+
+    function showSlide(index) {
+      if (heroItems.length === 0) return;
+      sliderIndex = index;
+      document.getElementById('hero-track').style.transform = `translateX(-${sliderIndex * 100}%)`;
+      updateDots();
+    }
+
+    function nextSlide(manual = true) {
+      sliderIndex = (sliderIndex + 1) % heroItems.length;
+      showSlide(sliderIndex);
+      if (manual) startAutoSlide();
+    }
+
+    function prevSlide() {
+      sliderIndex = (sliderIndex - 1 + heroItems.length) % heroItems.length;
+      showSlide(sliderIndex);
+      startAutoSlide();
+    }
+
+    function renderDots() {
+      const dotsContainer = document.getElementById('slider-dots');
+      dotsContainer.innerHTML = '';
+      heroItems.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (i === sliderIndex) dot.classList.add('active');
+        dot.onclick = () => { showSlide(i); startAutoSlide(); };
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function updateDots() {
+      document.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === sliderIndex);
+      });
+    }
+
+    function executeSearch() {
+      const query = document.getElementById('search-input').value;
+      if (!query) return;
+      if (sliderInterval) clearInterval(sliderInterval);
+      isSearchMode = true;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('section-title').innerText = `Results for "${query}"`;
+      document.getElementById('hero-banner-container').style.display = 'none';
+      showSkeletonLoaders();
+      
+      fetch(`https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${query}`)
+        .then(res => res.json())
+        .then(data => {
+          currentItemsData = data.results.filter(item => item.poster_path && item.backdrop_path);
+          renderGrid(currentItemsData, false);
+        });
+    }
+
+    function renderGrid(items, append = false) {
+      const grid = document.getElementById('content-grid');
+      if (!append) grid.innerHTML = '';
+      if (items.length === 0) {
+        grid.innerHTML = '<p style="color:#f0d8e6;">No results found, pookie! 🥺</p>';
+        return;
+      }
+
+      items.forEach(item => {
+        const title = item.title || item.name;
+        const date = (item.release_date || item.first_air_date || "N/A").split('-')[0];
+        const type = item.media_type || item.type || currentType;
+        
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <img src="${IMG_PATH + item.poster_path}" alt="${title}">
+          <div class="card-info">
+            <h4>${title}</h4><p>${date} 💖 ${item.vote_average ? item.vote_average.toFixed(1) : 'N/A'}</p>
+          </div>
+        `;
+        card.onclick = () => openDetails(item.id, type);
+        grid.appendChild(card);
+      });
+    }
+
+    async function openDetails(id, type) {
+      const url = `https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&append_to_response=credits,videos`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        document.getElementById('modal-header').style.backgroundImage = `url('${BG_PATH + data.backdrop_path}')`;
+        document.getElementById('modal-title').innerText = data.title || data.name;
+        const year = (data.release_date || data.first_air_date || "").split('-')[0];
+        const genres = data.genres ? data.genres.map(g => g.name).join(', ') : 'Drama';
+        document.getElementById('modal-meta').innerText = `${year} • ${genres} • 💖 ${data.vote_average ? data.vote_average.toFixed(1) : 'N/A'}`;
+        document.getElementById('modal-desc').innerText = data.overview;
+
+        const castContainer = document.getElementById('modal-cast');
+        castContainer.innerHTML = '';
+        if (data.credits && data.credits.cast) {
+          data.credits.cast.slice(0, 10).forEach(actor => {
+            if (actor.profile_path) {
+              castContainer.innerHTML += `
+                <div class="cast-card" onclick="openActorFilmography(${actor.id}, '${actor.name}')">
+                  <img src="${IMG_PATH + actor.profile_path}" alt="${actor.name}">
+                  <p>${actor.name}</p>
+                </div>`;
+            }
+          });
+        }
+
+        const trailerBtn = document.getElementById('modal-trailer-btn');
+        const trailer = data.videos && data.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+        if (trailer) {
+          trailerBtn.style.display = 'inline-block';
+          trailerBtn.onclick = () => openTrailer(trailer.key);
+        } else {
+          trailerBtn.style.display = 'none';
+        }
+
+        document.getElementById('modal-play-btn').onclick = () => { closeDetails(); openPlayer(id, type); };
+
+        const listBtn = document.getElementById('modal-list-btn');
+        const isSaved = watchlist.find(item => item.id === id);
+        listBtn.innerText = isSaved ? "✓ Added to List" : "+ Add to List";
+        
+        listBtn.onclick = () => {
+          if (isSaved) {
+            watchlist = watchlist.filter(item => item.id !== id);
+            listBtn.innerText = "+ Add to List";
+          } else {
+            watchlist.push({ id, title: data.title||data.name, poster_path: data.poster_path, type, vote_average: data.vote_average, release_date: data.release_date||data.first_air_date });
+            listBtn.innerText = "✓ Added to List";
+          }
+          localStorage.setItem('barbie_watchlist', JSON.stringify(watchlist));
+        };
+
+        document.getElementById('details-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      } catch (err) { console.error(err); }
+    }
+
+    async function openActorFilmography(actorId, actorName) {
+      closeDetails();
+      if (sliderInterval) clearInterval(sliderInterval);
+      isSearchMode = true;
+      document.getElementById('hero-banner-container').style.display = 'none';
+      document.getElementById('section-title').innerText = `${actorName} - Filmography`;
+      showSkeletonLoaders();
+
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/person/${actorId}/movie_credits?api_key=${API_KEY}`);
+        const data = await res.json();
+        currentItemsData = data.cast.filter(item => item.poster_path && item.backdrop_path);
+        renderGrid(currentItemsData, false);
+      } catch(err) { console.error(err); }
+    }
+
+    function openTrailer(key) {
+      document.getElementById('trailer-iframe').src = `https://www.youtube.com/embed/${key}?autoplay=1`;
+      document.getElementById('trailer-modal').style.display = 'flex';
+    }
+    function closeTrailer() {
+      document.getElementById('trailer-modal').style.display = 'none';
+      document.getElementById('trailer-iframe').src = '';
+    }
+
+    function closeDetails() {
+      document.getElementById('details-modal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function loadWatchlist() {
+      if (sliderInterval) clearInterval(sliderInterval);
+      isSearchMode = true; 
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab-watchlist').classList.add('active');
+      document.getElementById('section-title').innerText = "My Saved Collection 💖";
+      document.getElementById('hero-banner-container').style.display = 'none';
+      currentItemsData = watchlist;
+      renderGrid(watchlist, false);
+    }
+
+    function openPlayer(id, type) {
+      currentVideoId = id;
+      currentType = type;
+      document.getElementById('player-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      changeServer(1);
+    }
+
+    function changeServer(serverNum) {
+      document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.server-btn')[serverNum - 1].classList.add('active');
+      const iframe = document.getElementById('video-frame');
+      if (serverNum === 1) iframe.src = `https://vidsrc.me/embed/${currentType}?tmdb=${currentVideoId}`;
+      else if (serverNum === 2) iframe.src = `https://vidsrc.to/embed/${currentType}/${currentVideoId}`;
+      else if (serverNum === 3) iframe.src = `https://embed.su/embed/${currentType}/${currentVideoId}`;
+    }
+
+    function closePlayer() {
+      document.getElementById('player-modal').style.display = 'none';
+      document.getElementById('video-frame').src = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    function openAccountModal() { document.getElementById('account-modal').style.display = 'flex'; }
+    function closeAccountModal() { document.getElementById('account-modal').style.display = 'none'; }
+    function simulateCloudSync() {
+      const email = document.getElementById('user-email').value;
+      if(!email) { alert('Please enter a valid email, pookie! 🥺'); return; }
+      alert(`Success! Watchlist successfully synced to your pookie account: ${email} ✨`);
+      closeAccountModal();
+    }
+  </script>
+</body>
+</html>
