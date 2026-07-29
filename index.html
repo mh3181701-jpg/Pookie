@@ -790,7 +790,18 @@
     }
 
     function openPlayer(id, type) {
-      currentVideoId = id; currentType = type;
+      currentVideoId = id; 
+      currentType = type;
+      
+      // Auto-route / open the streaming link directly in a new tab if the device is a phone (mobile)
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+      
+      if (isMobile) {
+        const mobileUrl = `https://vidsrc.me/embed/${type}?tmdb=${id}`;
+        window.open(mobileUrl, '_blank');
+        return;
+      }
+
       document.getElementById('player-modal').style.display = 'flex'; 
       document.body.style.overflow = 'hidden'; 
       showPlayerLoader();
